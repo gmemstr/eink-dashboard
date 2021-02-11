@@ -52,7 +52,7 @@ if __name__ == '__main__':
                 time.sleep(5)
                 continue
 
-            time_draw.rectangle((0, 0, 250, 90), fill=255)
+            time_draw.rectangle((0, 0, 250, 122), fill=255)
             time_draw.text((0, 0), time.strftime('%H:%M'), font=font64, fill=0)
             time_draw.text((0, 100), time.strftime('%a, %d %B (%Y)'),
                            font=font18, fill=0)
