@@ -8,8 +8,8 @@ import io
 height = 122
 width = 250
 
-font18 = ImageFont.truetype('server/assets/Font.ttc', 18)
-font64 = ImageFont.truetype('server/assets/Font.ttc', 64)
+font18 = ImageFont.truetype('server/assets/OpenSans-SemiBold.ttf', 20)
+font64 = ImageFont.truetype('server/assets/OpenSans-Regular.ttf', 64)
 
 
 def run_command():
@@ -18,7 +18,7 @@ def run_command():
 
     time_draw.rectangle((0, 0, 250, 122), fill=255)
     time_draw.text((0, 0), time.strftime('%H:%M'), font=font64, fill=0)
-    time_draw.text((0, 100), time.strftime('%a, %d %B (%Y)'),
+    time_draw.text((0, 90), time.strftime('%a, %d %B (%Y)'),
                    font=font18, fill=0)
 
     try:
