@@ -8,8 +8,8 @@ import io
 height = 122
 width = 250
 
-font18 = ImageFont.truetype('server/fonts/Font.ttc', 18)
-font64 = ImageFont.truetype('server/fonts/Font.ttc', 64)
+font18 = ImageFont.truetype('server/assets/Font.ttc', 18)
+font64 = ImageFont.truetype('server/assets/Font.ttc', 64)
 
 
 def run_command():
@@ -20,6 +20,13 @@ def run_command():
     time_draw.text((0, 0), time.strftime('%H:%M'), font=font64, fill=0)
     time_draw.text((0, 100), time.strftime('%a, %d %B (%Y)'),
                    font=font18, fill=0)
+
+    try:
+        pi_image = Image.open('server/assets/RPi-Logo-Black-SCREEN.png')
+        pi_image.thumbnail((80,80))
+        time_image.paste(pi_image, (180, 10), mask=pi_image)
+    except Exception:
+        print("")
 
     time_image = time_image.transpose(Image.ROTATE_180)
     img_byte_arr = io.BytesIO()

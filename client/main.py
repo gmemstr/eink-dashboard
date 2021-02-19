@@ -9,6 +9,9 @@ from PIL import Image
 from signal import signal, SIGINT
 from sys import exit, argv
 
+height = 122
+width = 250
+
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -24,6 +27,20 @@ def handler(signal_received, frame):
     exit()
 
 
+# Generate fallback image if unable to connect to server.
+def generate_fallback():
+    time_image = Image.new('1', (width, height), 255)
+    time_draw = ImageDraw.Draw(time_image)
+
+    time_draw.rectangle((0, 0, 250, 122), fill=255)
+    time_draw.text((50, 50), time.strftime('%H:%M'), fill=0)
+    time_draw.text((50, 100), time.strftime('%a, %d %B (%Y)'), fill=0)
+
+    time_image = time_image.transpose(Image.ROTATE_180)
+
+    return time_image
+
+
 if __name__ == '__main__':
     signal(SIGINT, handler)
 
@@ -36,7 +53,11 @@ if __name__ == '__main__':
     epd.Clear(0xFF)
     print("requesting from " + argv[1])
     try:
-        i = Image.open(urllib2.urlopen(argv[1]))
+        try:
+            i = Image.open(urllib2.urlopen(argv[1]))
+        except Exception:
+            i = generate_fallback()
+
         epd.init(epd.FULL_UPDATE)
         epd.displayPartBaseImage(epd.getbuffer(i))
 
@@ -47,7 +68,10 @@ if __name__ == '__main__':
                 time.sleep(1)
                 continue
 
-            i = Image.open(urllib2.urlopen(argv[1]))
+            try:
+                i = Image.open(urllib2.urlopen(argv[1]))
+            except Exception:
+                i = generate_fallback()
 
             epd.displayPartial(epd.getbuffer(i))
             last_updated = time.strftime("%M")
